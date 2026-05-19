@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casino Elite - Zaawansowany System Kasynowy</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container">
+      <div class="navbar-brand">🎰 Casino Elite</div>
+      <div class="navbar-menu" id="navbarMenu">
+        <a href="#" class="nav-item" onclick="showPage('login')">Login</a>
+        <a href="#" class="nav-item" onclick="showPage('register')">Rejestracja</a>
+      </div>
+      <div class="navbar-user" id="navbarUser" style="display: none;">
+        <span id="userBalance">Saldo: $0</span>
+        <button class="btn btn-danger" onclick="logout()">Wyloguj się</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Login Page -->
+    <div id="login" class="page">
+      <div class="form-container">
+        <h1>Zaloguj się</h1>
+        <form onsubmit="handleLogin(event)">
+          <input type="text" id="loginUsername" placeholder="Nazwa użytkownika" required>
+          <input type="password" id="loginPassword" placeholder="Hasło" required>
+          <button type="submit" class="btn btn-primary">Zaloguj się</button>
+          <p>Nie masz konta? <a href="#" onclick="showPage('register')">Zarejestruj się tutaj</a></p>
+        </form>
+        <div id="loginError" class="error-message"></div>
+      </div>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register" class="page" style="display: none;">
+      <div class="form-container">
+        <h1>Rejestracja</h1>
+        <form onsubmit="handleRegister(event)">
+          <input type="text" id="regUsername" placeholder="Nazwa użytkownika" required>
+          <input type="email" id="regEmail" placeholder="Email" required>
+          <input type="password" id="regPassword" placeholder="Hasło" required>
+          <button type="submit" class="btn btn-primary">Zarejestruj się</button>
+          <p>Masz już konto? <a href="#" onclick="showPage('login')">Zaloguj się tutaj</a></p>
+        </form>
+        <div id="registerError" class="error-message"></div>
+      </div>
+    </div>
+
+    <!-- User Dashboard -->
+    <div id="dashboard" class="page" style="display: none;">
+      <h1>Panel Gracza</h1>
+      <div class="dashboard-grid">
+        <div class="card">
+          <h3>Twoje Saldo</h3>
+          <p id="dashboardBalance" class="balance-display">$1000</p>
+        </div>
+        <div class="card">
+          <h3>Ulubione Gry</h3>
+          <p id="gamesStats">Zagranogrze 0 gier</p>
+        </div>
+      </div>
+
+      <div class="games-section">
+        <h2>Gry Hazardowe</h2>
+        <div class="games-grid">
+          <!-- Blackjack -->
+          <div class="game-card" onclick="showPage('blackjack')">
+            <h3>♠️ Blackjack</h3>
+            <p>Klasyczna gra karciana</p>
+            <button class="btn btn-secondary">Graj</button>
+          </div>
+
+          <!-- Roulette -->
+          <div class="game-card" onclick="showPage('roulette')">
+            <h3>🎡 Ruletka</h3>
+            <p>Tradycyjna ruletka europejska</p>
+            <button class="btn btn-secondary">Graj</button>
+          </div>
+
+          <!-- Slots -->
+          <div class="game-card" onclick="showPage('slots')">
+            <h3>🎰 Automaty</h3>
+            <p>Automaty jednoręcy bandyta</p>
+            <button class="btn btn-secondary">Graj</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="history-section">
+        <h2>Historia Gier</h2>
+        <table id="gameHistory">
+          <thead>
+            <tr>
+              <th>Gra</th>
+              <th>Stawka</th>
+              <th>Wygrana</th>
+              <th>Wynik</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody id="historyBody">
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn btn-warning" onclick="showPage('admin-login')">Panel Admina</button>
+    </div>
+
+    <!-- Blackjack Game -->
+    <div id="blackjack" class="page" style="display: none;">
+      <h2>Blackjack</h2>
+      <div class="game-container">
+        <div class="game-info">
+          <button class="btn btn-secondary" onclick="showPage('dashboard')">← Wróć</button>
+        </div>
+
+        <div class="game-area">
+          <div class="dealer-area">
+            <h4>Krupier</h4>
+            <div id="dealerCards" class="cards"></div>
+            <p id="dealerSum">Suma: 0</p>
+          </div>
+
+          <div class="player-area">
+            <h4>Gracz</h4>
+            <div id="playerCards" class="cards"></div>
+            <p id="playerSum">Suma: 0</p>
+          </div>
+        </div>
+
+        <div class="bet-section">
+          <label>Stawka ($):</label>
+          <input type="number" id="blackjackBet" min="1" max="1000" value="10">
+          <button class="btn btn-primary" onclick="playBlackjack()">Graj</button>
+        </div>
+
+        <div id="blackjackResult" class="result-message"></div>
+      </div>
+    </div>
+
+    <!-- Roulette Game -->
+    <div id="roulette" class="page" style="display: none;">
+      <h2>Ruletka</h2>
+      <div class="game-container">
+        <div class="game-info">
+          <button class="btn btn-secondary" onclick="showPage('dashboard')">← Wróć</button>
+        </div>
+
+        <div class="roulette-area">
+          <div class="roulette-wheel" id="rouletteWheel">
+            <div class="wheel-spinner"></div>
+            <div id="wheelResult" class="wheel-result"></div>
+          </div>
+        </div>
+
+        <div class="bet-section">
+          <label>Typ Zakladu:</label>
+          <select id="betType" onchange="updateBetOptions()">
+            <option value="number">Liczba (1-36)</option>
+            <option value="red">Czerwone</option>
+            <option value="black">Czarne</option>
+            <option value="odd">Nieparzyste</option>
+            <option value="even">Parzyste</option>
+          </select>
+
+          <div id="numberInput" style="display: none;">
+            <label>Wybierz Liczbę:</label>
+            <input type="number" id="betNumber" min="0" max="36" value="17">
+          </div>
+
+          <label>Stawka ($):</label>
+          <input type="number" id="rouletteBet" min="1" max="1000" value="10">
+          <button class="btn btn-primary" onclick="playRoulette()">Graj</button>
+        </div>
+
+        <div id="rouletteResult" class="result-message"></div>
+      </div>
+    </div>
+
+    <!-- Slots Game -->
+    <div id="slots" class="page" style="display: none;">
+      <h2>Automaty Jednoręky Bandyta</h2>
+      <div class="game-container">
+        <div class="game-info">
+          <button class="btn btn-secondary" onclick="showPage('dashboard')">← Wróć</button>
+        </div>
+
+        <div class="slots-area">
+          <div id="slotsMachine" class="slots-machine">
+            <div id="slot1" class="slot-reel">?</div>
+            <div id="slot2" class="slot-reel">?</div>
+            <div id="slot3" class="slot-reel">?</div>
+          </div>
+        </div>
+
+        <div class="bet-section">
+          <label>Stawka ($):</label>
+          <input type="number" id="slotsBet" min="1" max="1000" value="10">
+          <button class="btn btn-primary btn-spin" onclick="playSlots()">SPIN!</button>
+        </div>
+
+        <div id="slotsResult" class="result-message"></div>
+      </div>
+    </div>
+
+    <!-- Admin Login -->
+    <div id="admin-login" class="page" style="display: none;">
+      <div class="form-container">
+        <h1>Panel Administracyjny</h1>
+        <form onsubmit="handleAdminLogin(event)">
+          <input type="text" id="adminUsername" placeholder="Nazwa użytkownika" required>
+          <input type="password" id="adminPassword" placeholder="Hasło" required>
+          <button type="submit" class="btn btn-primary">Zaloguj się</button>
+          <button type="button" class="btn btn-secondary" onclick="showPage('dashboard')">Wróć</button>
+        </form>
+        <div id="adminLoginError" class="error-message"></div>
+      </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="page" style="display: none;">
+      <div class="admin-header">
+        <h1>Panel Administracyjny</h1>
+        <button class="btn btn-danger" onclick="adminLogout()">Wyloguj się</button>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>Użytkownicy</h3>
+          <p id="adminTotalUsers">0</p>
+        </div>
+        <div class="admin-card">
+          <h3>Całkowite Saldo</h3>
+          <p id="adminTotalBalance">$0</p>
+        </div>
+        <div class="admin-card">
+          <h3>Całkowite Gry</h3>
+          <p id="adminTotalGames">0</p>
+        </div>
+        <div class="admin-card">
+          <h3>Całkowite Wypłaty</h3>
+          <p id="adminTotalPayouts">$0</p>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <h2>Zarządzanie Użytkownikami</h2>
+        <input type="text" id="searchUser" placeholder="Szukaj użytkownika..." onkeyup="loadUsers()">
+        <table id="usersTable">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nazwa</th>
+              <th>Email</th>
+              <th>Saldo</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="admin-section">
+        <h2>Statystyki Gier</h2>
+        <table id="gamesStatsTable">
+          <thead>
+            <tr>
+              <th>Typ Gry</th>
+              <th>Liczba Gier</th>
+              <th>Całkowite Stawki</th>
+              <th>Całkowite Wypłaty</th>
+            </tr>
+          </thead>
+          <tbody id="gamesStatsBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="admin-section">
+        <h2>Dziennik Zdarzeń</h2>
+        <table id="logsTable">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Akcja</th>
+              <th>Opis</th>
+            </tr>
+          </thead>
+          <tbody id="logsBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Detail Modal -->
+  <div id="userModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="modalUserName">Szczegóły Użytkownika</h2>
+      <p>Email: <span id="modalUserEmail"></span></p>
+      <p>Saldo: $<input type="number" id="modalUserBalance" min="0"></p>
+      <div id="modalUserHistory">
+      </div>
+      <button class="btn btn-primary" onclick="updateUserBalance()">Aktualizuj Saldo</button>
+      <button class="btn btn-danger" onclick="deleteUser()">Usuń Użytkownika</button>
+      <button class="btn btn-secondary" onclick="closeModal()">Zamknij</button>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
