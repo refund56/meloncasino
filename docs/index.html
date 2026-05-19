@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍈 Melon Casino - Gra Hazardowa Online</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header {
+            color: white;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            margin: 20px 10px;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cta-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .cta-primary:hover {
+            background: #5568d3;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .cta-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .cta-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .info {
+            background: rgba(255,255,255,0.95);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+
+        .info h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .tech-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 50px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍈 Melon Casino</h1>
+            <p>Doświadcz emocji hazardu online z najlepszymi grami</p>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <h3>🎰 Różne Gry</h3>
+                <p>Blackjack, Roulette, Automaty - wybierz swoją ulubioną grę i spróbuj szczęścia!</p>
+            </div>
+            <div class="feature-card">
+                <h3>💳 System Zakładów</h3>
+                <p>Bezpieczny system zarządzania balansem i obstawiania z monitorowaniem transakcji</p>
+            </div>
+            <div class="feature-card">
+                <h3>👤 Bezpieczeństwo</h3>
+                <p>Autentykacja użytkowników i obsługa administracyjna dla bezpiecznej rozgrywki</p>
+            </div>
+        </div>
+
+        <div>
+            <a href="https://github.com/melon/melon-casino" class="cta-button cta-primary">📂 Przejdź do Repozytorium</a>
+            <a href="https://melon-casino.onrender.com" class="cta-button cta-secondary" target="_blank">🚀 Uruchom Aplikację</a>
+        </div>
+
+        <div class="info">
+            <h2>📱 Technologia</h2>
+            <p>Aplikacja zbudowana z wykorzystaniem nowoczesnych technologii webowych</p>
+            <div class="tech-stack">
+                <span class="tech-badge">Node.js</span>
+                <span class="tech-badge">Express.js</span>
+                <span class="tech-badge">SQLite</span>
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">CSS3</span>
+                <span class="tech-badge">JavaScript</span>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Melon Casino. Wszystkie prawa zastrzeżone.</p>
+        </footer>
+    </div>
+</body>
+</html>
