@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '/api';
 let authToken = localStorage.getItem('token');
 let currentUserId = localStorage.getItem('userId');
 let currentUserRole = localStorage.getItem('userRole');
