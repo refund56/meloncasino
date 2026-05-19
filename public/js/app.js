@@ -57,15 +57,22 @@ async function handleLogin(e) {
       body: JSON.stringify({ username, password })
     });
 
-    const data = await response.json();
+    let data;
+    try {
+      const text = await response.text();
+      data = text ? JSON.parse(text) : {};
+    } catch (e) {
+      console.error('JSON parse error:', e);
+      throw new Error('Invalid server response');
+    }
 
     if (!response.ok) {
-      throw new Error(data.message);
+      throw new Error(data.message || 'Login failed');
     }
 
     authToken = data.token;
-    currentUserId = data.user.id;
-    currentUserRole = data.user.role;
+    currentUserId = data.user?.id;
+    currentUserRole = data.user?.role;
     
     localStorage.setItem('token', authToken);
     localStorage.setItem('userId', currentUserId);

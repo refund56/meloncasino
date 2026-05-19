@@ -2,7 +2,8 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const dbPath = path.join(__dirname, '../../../casino.db');
+// Use in-memory database or file-based depending on environment
+const dbPath = process.env.NODE_ENV === 'production' ? ':memory:' : path.join(__dirname, '../../../casino.db');
 
 const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
@@ -10,6 +11,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
   } else {
     console.log('Connected to SQLite database');
     initializeDatabase();
+    seedDefaultUsers();
   }
 });
 
@@ -71,20 +73,38 @@ function initializeDatabase() {
       )
     `);
 
-    // Create default admin user if not exists
-    db.get('SELECT * FROM users WHERE username = ?', ['admin'], (err, row) => {
-      if (!row) {
-        const hashedPassword = bcrypt.hashSync('admin123', 10);
-        db.run(
-          'INSERT INTO users (username, email, password, balance, role) VALUES (?, ?, ?, ?, ?)',
-          ['admin', 'admin@casino.com', hashedPassword, 10000, 'admin'],
-          (err) => {
-            if (err) console.error('Error creating admin user:', err);
-            else console.log('Admin user created successfully');
-          }
-        );
-      }
-    });
+  });
+}
+
+function seedDefaultUsers() {
+  // Create default admin user if not exists
+  db.get('SELECT * FROM users WHERE username = ?', ['admin'], (err, row) => {
+    if (!row) {
+      const hashedPassword = bcrypt.hashSync('admin123', 10);
+      db.run(
+        'INSERT INTO users (username, email, password, balance, role) VALUES (?, ?, ?, ?, ?)',
+        ['admin', 'admin@casino.com', hashedPassword, 10000, 'admin'],
+        (err) => {
+          if (err) console.error('Error creating admin user:', err);
+          else console.log('✅ Admin user created: admin/admin123');
+        }
+      );
+    }
+  });
+
+  // Create default player user if not exists
+  db.get('SELECT * FROM users WHERE username = ?', ['player1'], (err, row) => {
+    if (!row) {
+      const hashedPassword = bcrypt.hashSync('pass123', 10);
+      db.run(
+        'INSERT INTO users (username, email, password, balance, role) VALUES (?, ?, ?, ?, ?)',
+        ['player1', 'player@casino.com', hashedPassword, 5000, 'user'],
+        (err) => {
+          if (err) console.error('Error creating player user:', err);
+          else console.log('✅ Player user created: player1/pass123');
+        }
+      );
+    }
   });
 }
 
